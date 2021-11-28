@@ -2,10 +2,23 @@
 
 Vzorčni repozitorij za projekt pri predmetu APPR v študijskem letu 2021/22. 
 
-## Tematika
+## Analiza kriminala v Evropi
 
-Izbrali si boste temo, s katero se bo vaš projekt ukvarjal.
-Tukaj boste napisali, kje ste dobili podatke, ter kakšen je vaš cilj.
+V projektni nalogi bom analizira kriminal v Evropi. Osredotočila se bom na obdobje od leta 2010 do leta 2020
+
+Cilj projektne naloge je prikazati, kateri dejavniki bi lahko najbolj vplivali na količino kriminala v posamezni Evropski državi in kako se količina kriminala z leti spreminja. 
+
+1. Tabela:  stopnja kriminala v posameznih Evropskih državah https://www.numbeo.com/crime/rankings_by_country.jsp?title=2020&region=150&displayColumn=1 (HTML)
+
+2. Tabela: Stopnja izobrazbe v posameznih Evropskih državah https://ec.europa.eu/eurostat/databrowser/view/edat_lfs_9903/default/table?lang=en (CSV)
+
+3. Tabela: Stopnja brezposelnost v posameznih Evropskih državah https://ec.europa.eu/eurostat/databrowser/view/lfsq_urgan/default/table?lang=en (CSV)
+
+4. Tabela: Odstotek zadolženih ljudi v posameznih Evropskih državah https://ec.europa.eu/eurostat/databrowser/view/hlth_dm050/default/table?lang=en (CSV)
+
+5. Tabela: Stopnja revščine v posameznih Evropskih državah https://ec.europa.eu/eurostat/databrowser/view/ilc_li02$DV_548/default/table?lang=en (CSV)
+
+
 
 ## Program
 
