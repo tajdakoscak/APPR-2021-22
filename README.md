@@ -8,7 +8,7 @@ V projektni nalogi bom analizira kriminal v Evropi. Osredotočila se bom na obdo
 
 Cilj projektne naloge je prikazati, kateri dejavniki bi lahko najbolj vplivali na količino kriminala v posamezni Evropski državi in kako se količina kriminala z leti spreminja. 
 
-1. Tabela:  stopnja kriminala v posameznih Evropskih državah https://www.numbeo.com/crime/rankings_by_country.jsp?title=2020&region=150&displayColumn=1 (HTML)
+1. Tabela:  stopnja kriminala v posameznih Evropskih državah https://www.numbeo.com/crime/rankings_by_country.jsp?title=2020&region=150&displayColumn=0 (HTML)
     * Država
     * Indeks kriminala
 
