@@ -4,7 +4,7 @@ Vzorčni repozitorij za projekt pri predmetu APPR v študijskem letu 2021/22.
 
 ## Analiza kriminala v Evropi
 
-V projektni nalogi bom analizira kriminal v Evropi. Osredotočila se bom na obdobje od leta 2010 do leta 2020
+V projektni nalogi bom analizira kriminal v Evropi. Osredotočila se bom na obdobje od leta 2011 do leta 2020
 
 Cilj projektne naloge je prikazati, kateri dejavniki bi lahko najbolj vplivali na količino kriminala v posamezni Evropski državi in kako se količina kriminala z leti spreminja. 
 
