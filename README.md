@@ -10,6 +10,7 @@ Cilj projektne naloge je prikazati, kateri dejavniki bi lahko najbolj vplivali n
 
 1. Tabela:  stopnja kriminala v posameznih Evropskih državah https://www.numbeo.com/crime/rankings_by_country.jsp?title=2020&region=150&displayColumn=0 (HTML)
     * Država
+    * Leto
     * Indeks kriminala
 
 2. Tabela: Stopnja izobrazbe v posameznih Evropskih državah https://ec.europa.eu/eurostat/databrowser/view/edat_lfs_9903/default/table?lang=en (CSV)
