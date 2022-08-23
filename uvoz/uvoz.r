@@ -5,6 +5,9 @@ library(dplyr)
 library(rvest)
 library(XML)
 library(stringr)
+library(ggplot2)
+library(naniar)
+
 
 #=======================================================================================================================================
 #Stopnja in kategorija kriminala v posameznih evropskih državah
@@ -24,14 +27,21 @@ KRIMINALITETA[KRIMINALITETA == "ICCS03012"] <- "Spolni napad"
 KRIMINALITETA[KRIMINALITETA == "ICCS03011"] <- "Posiljstvo"
 KRIMINALITETA[KRIMINALITETA == "ICCS0301"] <- "Spolno nasilje"
 KRIMINALITETA[KRIMINALITETA == "ICCS020221"] <- "Ugrabitev"
-KRIMINALITETA[KRIMINALITETA == "ICCS02011"] <- "napad"
+KRIMINALITETA[KRIMINALITETA == "ICCS02011"] <- "Napad"
 KRIMINALITETA[KRIMINALITETA == "ICCS0102"] <- "Poskus namernega umora"
-KRIMINALITETA[KRIMINALITETA == "ICCS0501"] <- "vlom"
+KRIMINALITETA[KRIMINALITETA == "ICCS0501"] <- "Vlom"
 
 
 
 KRIMINALITETA<-KRIMINALITETA[!(KRIMINALITETA$"unit"=="NR"),]
 
+KRIMINALITETA <- KRIMINALITETA %>% select(-"unit")
+
+Skupno_Kriminala <- KRIMINALITETA %>% 
+  group_by(geo, TIME_PERIOD) %>% 
+  summarise_if(is.numeric, funs(sum))
+
+colnames(Skupno_Kriminala) <-  c("Država", "Leto", "Število VSEH kaznivih dejanj na 1000 prebivalcev")
 #-----------------------
 #2020
 url <- "https://www.numbeo.com/crime/rankings_by_country.jsp?title=2020&region=150&displayColumn=1"
@@ -188,64 +198,69 @@ TABELA1 <- TABELA1 %>% select("TIME_PERIOD","država",Indeks_varnosti, "iccs", "
 
 colnames(TABELA1) <-c("Leto","Država","Indeks varnosti", "Kategorija kaznivega dejanja", "Število kaznivih dejanj na 1000 prebivalcev") 
 
+rm(KRIMINAL20, KRIMINAL19, KRIMINAL18,KRIMINAL17,KRIMINAL16,KRIMINAL15,KRIMINAL14,KRIMINAL13,KRIMINAL12,KRIMINALITETA,stran)
 
-
-
-
-#=======================================================================================================================================
-#Značilnosti zapornikov
-
-ZAPORNIKI <- read_csv("podatki/zaporniki.csv",na=":",
-                      locale=locale(encoding="windows-1250"),  
-                      col_types = cols(
-                        .default = col_guess(), 
-                        "unit" = col_factor(), 
-                        "sex" = col_factor(),
-                        "age" = col_factor()
-                      )) %>% select("unit","geo", "sex", "age","TIME_PERIOD", "OBS_VALUE" )
-
-
-TABELA2 <- ZAPORNIKI[!(ZAPORNIKI$"unit"=="NR"),]  %>%
-  select(-"unit")
-
-colnames(TABELA2) <- c("geo", "sex", "age","TIME_PERIOD", "OBS_VALUE")
-TABELA2 <- left_join(TABELA2, drzave, by="geo") %>% select("TIME_PERIOD","država","sex","age", "OBS_VALUE")
-
-colnames(TABELA2) <- c("Leto", "Država", "Spol", "Starostna skupina", "Število zapornikov na 1000 prebivalcev")
+TABELA1 <- TABELA1 %>% drop_na(Država)
 
 #=======================================================================================================================================
-#Stopnja izobrazbe, revščine, odstotek brezposelnih ter zadolženih ljudi v posameznih evropskih državah
+#Stopnja revščine, odstotek brezposelnih ter zadolženih ljudi v posameznih evropskih državah
 
 
 
 
-IZOBRAZBA <- read_csv("podatki/izobrazba.csv",na=":",
-                   locale=locale(encoding="windows-1250")) %>% select("geo", "TIME_PERIOD", "OBS_VALUE" )
 BREZPOSELNOST <- read_csv("podatki/brezposelnost.csv",na=":",
                           locale=locale(encoding="windows-1250")) %>% select("geo", "TIME_PERIOD", "OBS_VALUE" )
 
-TABELA3 <- left_join(IZOBRAZBA, BREZPOSELNOST, by=c("geo", "TIME_PERIOD"))
 
 
 ZADOLZENOST <- read_csv("podatki/zadolzenost.csv",na=":",
                         locale=locale(encoding="windows-1250")) %>% select("geo", "TIME_PERIOD", "OBS_VALUE" )
 
-TABELA3 <- left_join(TABELA3, ZADOLZENOST, by=c("geo", "TIME_PERIOD"))
-colnames(TABELA3) <- c("geo", "TIME_PERIOD", "odstotek NEizobraženih", "odstotek brezposelnih", "odstotek zadolženih")
+TABELA2 <- left_join(BREZPOSELNOST, ZADOLZENOST, by=c("geo", "TIME_PERIOD"))
+
+
+
+
 
 REVSCINA <-  read_csv("podatki/revscina.csv",na=":",
                       locale=locale(encoding="windows-1250")) %>% select("geo", "TIME_PERIOD", "OBS_VALUE" )
 
-TABELA3 <- left_join(TABELA3, REVSCINA, by=c("geo", "TIME_PERIOD"))
+TABELA2 <- left_join(TABELA2, REVSCINA, by=c("geo", "TIME_PERIOD"))
 
 GINI <-  read_csv("podatki/GINIkoeficient.csv",na=":",
                   locale=locale(encoding="windows-1250")) %>% select("geo", "TIME_PERIOD", "OBS_VALUE" )
 
-TABELA3 <- left_join(TABELA3, GINI, by=c("geo", "TIME_PERIOD"))
+TABELA2 <- left_join(TABELA2, GINI, by=c("geo", "TIME_PERIOD"))
 
-colnames(TABELA3) <- c("geo", "TIME_PERIOD", "odstotek NEizobraženih", "odstotek brezposelnih", "odstotek zadolženih", "revscina", "neenakosti")
+colnames(TABELA2) <- c("geo", "TIME_PERIOD", "odstotek brezposelnih", "odstotek zadolženih", "revscina", "neenakosti")
 
 
-TABELA3 <- TABELA3 %>% select( "TIME_PERIOD", "geo", "odstotek NEizobraženih", "odstotek brezposelnih", "odstotek zadolženih", "revscina", "neenakosti")
+TABELA2 <- TABELA2 %>% select( "TIME_PERIOD", "geo", "odstotek brezposelnih", "odstotek zadolženih", "revscina", "neenakosti")
 
-colnames(TABELA3) <- c("Leto","Država", "Odstotek pribivalstav z zgolj osnovnošolsko ali nižjo srednješolsko izobrazbo ","Odstotek brezposelnih", "Odstotek zadolženih", "Revščina", "Neenakosti - GINI koeficient")
+colnames(TABELA2) <- c("Leto","Država","Odstotek brezposelnih", "Odstotek zadolženih", "Revščina", "Neenakosti - GINI koeficient")
+
+TABELA2 <- left_join(TABELA2, Skupno_Kriminala, by=c("Država", "Leto"))
+TABELA2 <- TABELA2[-412,]
+
+
+#=================================================================================
+na_strings <- c(" ", " ", "","—")
+
+
+url3 <- "https://en.wikipedia.org/wiki/List_of_countries_by_incarceration_rate"
+stran <- read_html(url3)
+zaprti <- stran %>% html_nodes(xpath = '//table') %>%
+  .[[1]] %>%
+  html_table %>%
+  select(c("Country or subnational area", "Region", "Rate per 100,000 [3]"))  %>%
+  rename(
+    "Država" = "Country or subnational area",
+    "Območje" = "Region",
+    "Število kaznivih dejanj na 1000000 prebivalcev" = "Rate per 100,000 [3]"
+  )%>%
+  replace_with_na_all(condition = ~.x %in% na_strings)%>%  #spremeni polja kjer so bli prej -, "", " ",...
+  na.omit() %>%
+  mutate(across(everything(), gsub, pattern = "\\*.*", replacement = ""))%>%
+  mutate(across(everything(), gsub, pattern = "U.S.", replacement = "US"))
+
+TABELA3 <- zaprti

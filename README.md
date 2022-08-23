@@ -4,32 +4,32 @@ Vzorčni repozitorij za projekt pri predmetu APPR v študijskem letu 2021/22.
 
 ## Analiza kaznivih dejanj v Evropi
 
-V projektni nalogi bom analizira kazniva dejanja v Evropi. Osredotočila se bom na obdobje od leta 2008 do leta 2020
+V projektni nalogi bom analizira kazniva dejanja v Evropi po tipu kaznivega dejanja. Poskušala bom najti povezavo med kriminaliteto in stopnjo revščine, odstotekom brezposelnih in odstotekom zadolženih ljudi.Na koncu pa bom analizirala še svetovne podatke o kriminaliteti in jih primerjala z Evropskimi.
 
-Cilj projektne naloge je prikazati, kateri dejavniki bi lahko najbolj vplivali na količino kriminala v posamezni Evropski državi in kako se količina kriminala z leti spreminja. 
+Cilj projektne naloge je prikazati, kateri dejavniki bi lahko najbolj vplivali na količino kriminala v posamezni Evropski državi in kako se količina kriminala v Evropi razlikuje od količine kriminala po svetu. 
 
-1. Tabela:  Stopnja in kategorija kriminala v posameznih evropskih državah https://www.numbeo.com/crime/rankings_by_country.jsp?title=2020&region=150&displayColumn=0 (HTML), https://ec.europa.eu/eurostat/databrowser/view/CRIM_OFF_CAT__custom_2456657/default/table?lang=en (CSV)
+1. Tabela:  Stopnja in kategorija kriminala v posameznih evropskih državah 
+https://www.numbeo.com/crime/rankings_by_country.jsp?title=2020&region=150&displayColumn=0 (HTML), https://ec.europa.eu/eurostat/databrowser/view/CRIM_OFF_CAT__custom_2456657/default/table?lang=en (CSV)
     * Država
     * Leto
     * Indeks kriminala
     * Kategorija kaznivega dejanja 
     * Število kaznivih dejanj po kategorijah na 1000 prebivalcev
 
-2. Tabela: Značilnosti zapornikov https://ec.europa.eu/eurostat/databrowser/view/crim_pris_off/default/table?lang=en (CSV), https://ec.europa.eu/eurostat/databrowser/view/crim_pris_age/default/table?lang=en (CSV)
-    * Število zapornikov
-    * Spol
-    * Starost 
-    * Kategoriji kaznivega dejanja 
 
-3. Tabela: Stopnja izobrazbe, revščine, odstotek brezposelnih ter zadolženih ljudi v posameznih evropskih državah https://ec.europa.eu/eurostat/databrowser/view/edat_lfs_9903/default/table?lang=en (CSV), https://ec.europa.eu/eurostat/databrowser/view/ilc_di12/default/table?lang=en (CSV), https://ec.europa.eu/eurostat/databrowser/view/edat_lfs_9903/default/table?lang=en (CSV), https://ec.europa.eu/eurostat/databrowser/view/lfsq_urgan/default/table?lang=en (CSV), https://ec.europa.eu/eurostat/databrowser/view/hlth_dm050/default/table?lang=en (CSV), https://ec.europa.eu/eurostat/databrowser/view/ilc_li02$DV_548/default/table?lang=en (CSV)
+2. Tabela: Stopnja revščine, odstotek brezposelnih, odstotek zadolženih ljudi, Ginijev koeficient v posameznih evropskih državah po letih    
+https://ec.europa.eu/eurostat/databrowser/view/tipsun20/default/table?lang=en (CSV), https://ec.europa.eu/eurostat/databrowser/view/hlth_dm050/default/table?lang=en (CSV), https://ec.europa.eu/eurostat/databrowser/view/ilc_li02$DV_548/default/table?lang=en (CSV) 
     * Država
     * Leto
-    * Stopnja izobrazbe
     * Odstotek brezposelnih
     * Odstotek zadolženih ljudi
     * Stopnja revščine
-    * Porazdelitev dohodka - Ginijev koeficient 
-
+    * Število kaznivih dejanj na 1000 prebivalcev
+    
+3. Tabela: Število ljudi v zaporih 
+https://en.wikipedia.org/wiki/List_of_countries_by_incarceration_rate (HTML)
+    * Država
+    * število zaprtih na 100,000 prebivalcev
 
 
 ## Program
