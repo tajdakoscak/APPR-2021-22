@@ -5,16 +5,17 @@ library(dplyr)
 library(rvest)
 library(XML)
 library(stringr)
-library(ggplot2)
 library(naniar)
+library(tidyverse)
+
 
 
 #=======================================================================================================================================
-#Stopnja in kategorija kriminala v posameznih evropskih državah
+#Stopnja in kategorija kriminala v posameznih evropskih drzavah
 
 
-KRIMINALITETA <- read_csv("podatki/kriminaliteta.csv",na=":",
-                        locale=locale(encoding="windows-1250")) %>% select(-"DATAFLOW",-"LAST UPDATE",-"freq","iccs","unit","geo","TIME_PERIOD","OBS_VALUE",-"OBS_FLAG")
+KRIMINALITETA <- read_csv("podatki/kriminaliteta.csv",na=":", locale=locale(encoding="windows-1250")) %>%  select(-"DATAFLOW",-"LAST UPDATE",-"freq","iccs","unit","geo","TIME_PERIOD","OBS_VALUE",-"OBS_FLAG")
+
 
 
 KRIMINALITETA[KRIMINALITETA == "ICCS0101"] <- "Namerni umor"
@@ -33,7 +34,6 @@ KRIMINALITETA[KRIMINALITETA == "ICCS0501"] <- "Vlom"
 
 
 
-KRIMINALITETA<-KRIMINALITETA[!(KRIMINALITETA$"unit"=="NR"),]
 
 KRIMINALITETA <- KRIMINALITETA %>% select(-"unit")
 
@@ -41,8 +41,43 @@ Skupno_Kriminala <- KRIMINALITETA %>%
   group_by(geo, TIME_PERIOD) %>% 
   summarise_if(is.numeric, funs(sum))
 
-colnames(Skupno_Kriminala) <-  c("Država", "Leto", "Število VSEH kaznivih dejanj na 1000 prebivalcev")
+colnames(Skupno_Kriminala) <-  c("Drzava", "Leto", "obsojeni")
+
+Skupno_Kriminala <- transform(
+  Skupno_Kriminala,Leto = as.integer(Leto))
+
+
+url2 <- "https://docs.oracle.com/en/cloud/saas/netsuite/ns-online-help/section_N454670.html"
+stran <- read_html(url2)
+drzave <- stran %>% html_nodes(xpath = '//table') %>%
+  .[[1]] %>%
+  html_table
+
+
+
+colnames(drzave) <-  c("Drzava", "drzava")
+drzave$Drzava[drzave$Drzava == "GR"] <- "EL"
+drzave$drzava[drzave$drzava == "Croatia/Hrvatska"] <- "Croatia"
+
+
+Skupno_Kriminala <- left_join(Skupno_Kriminala, drzave, by=c("Drzava"))
+
+colnames(KRIMINALITETA) <-  c("Vrsta", "Drzava","Leto","obsojeni")
+KRIMINALITETA <- left_join(KRIMINALITETA, drzave, by=c("Drzava"))
+
+
+
+TABELA1 <- KRIMINALITETA %>% select("Leto", "Drzava", "drzava","Vrsta","obsojeni")
+
+#rm(KRIMINALITETA)
+
+
+
 #-----------------------
+
+#DODALA INDEKS VARNOSTI
+
+
 #2020
 url <- "https://www.numbeo.com/crime/rankings_by_country.jsp?title=2020&region=150&displayColumn=1"
 stran <- read_html(url)
@@ -51,7 +86,7 @@ KRIMINAL20 <- stran %>% html_nodes(xpath = '//table') %>%
   html_table %>%
   select(-"Rank")
 
-colnames(KRIMINAL20) <-  c("država", "indeks varnosti20")
+colnames(KRIMINAL20) <-  c("drzava", "indeks varnosti20")
 
 KRIMINAL20["TIME_PERIOD"] = 2020
 #-----------------------
@@ -63,7 +98,7 @@ KRIMINAL19 <- stran %>% html_nodes(xpath = '//table') %>%
   html_table %>%
   select(-"Rank")
 
-colnames(KRIMINAL19)<-  c("država", "indeks varnosti19")
+colnames(KRIMINAL19)<-  c("drzava", "indeks varnosti19")
 
 KRIMINAL19["TIME_PERIOD"] = 2019
 #------------------
@@ -75,7 +110,7 @@ KRIMINAL18 <- stran %>% html_nodes(xpath = '//table') %>%
   html_table %>%
   select(-"Rank")
 
-colnames(KRIMINAL18)<-  c("država", "indeks varnosti18")
+colnames(KRIMINAL18)<-  c("drzava", "indeks varnosti18")
 
 KRIMINAL18["TIME_PERIOD"] = 2018
 
@@ -89,7 +124,7 @@ KRIMINAL17 <- stran %>% html_nodes(xpath = '//table') %>%
   html_table %>%
   select(-"Rank")
 
-colnames(KRIMINAL17)<-  c("država", "indeks varnosti17")
+colnames(KRIMINAL17)<-  c("drzava", "indeks varnosti17")
 
 KRIMINAL17["TIME_PERIOD"] = 2017
 
@@ -103,7 +138,7 @@ KRIMINAL16 <- stran %>% html_nodes(xpath = '//table') %>%
   html_table %>%
   select(-"Rank")
 
-colnames(KRIMINAL16)<-  c("država", "indeks varnosti16")
+colnames(KRIMINAL16)<-  c("drzava", "indeks varnosti16")
 
 KRIMINAL16["TIME_PERIOD"] = 2016
 
@@ -117,7 +152,7 @@ KRIMINAL15 <- stran %>% html_nodes(xpath = '//table') %>%
   html_table %>%
   select(-"Rank")
 
-colnames(KRIMINAL15)<-  c("država", "indeks varnosti15")
+colnames(KRIMINAL15)<-  c("drzava", "indeks varnosti15")
 
 KRIMINAL15["TIME_PERIOD"] = 2015
 
@@ -131,7 +166,7 @@ KRIMINAL14 <- stran %>% html_nodes(xpath = '//table') %>%
   html_table %>%
   select(-"Rank")
 
-colnames(KRIMINAL14)<-  c("država", "indeks varnosti14")
+colnames(KRIMINAL14)<-  c("drzava", "indeks varnosti14")
 
 KRIMINAL14["TIME_PERIOD"] = 2014
 
@@ -145,7 +180,7 @@ KRIMINAL13 <- stran %>% html_nodes(xpath = '//table') %>%
   html_table %>%
   select(-"Rank")
 
-colnames(KRIMINAL13)<-  c("država", "indeks varnosti13")
+colnames(KRIMINAL13)<-  c("drzava", "indeks varnosti13")
 
 KRIMINAL13["TIME_PERIOD"] = 2013
 
@@ -158,52 +193,45 @@ KRIMINAL12 <- stran %>% html_nodes(xpath = '//table') %>%
   html_table %>%
   select(-"Rank")
 
-colnames(KRIMINAL12)<-  c("država", "indeks varnosti12")
+colnames(KRIMINAL12)<-  c("drzava", "indeks varnosti12")
 
 KRIMINAL12["TIME_PERIOD"] = 2012
+
+
+
+
+
 
 #--------------------
 
 #ZDRUŽITEV TABEL
 
 
-#imena in kratice držav
-url2 <- "https://docs.oracle.com/en/cloud/saas/netsuite/ns-online-help/section_N454670.html"
-stran <- read_html(url2)
-drzave <- stran %>% html_nodes(xpath = '//table') %>%
-  .[[1]] %>%
-  html_table
-
-colnames(drzave) <-  c("geo", "država")
-
-KRIMINALITETA <- left_join(KRIMINALITETA, drzave, by="geo")
-KRIMINALITETA <- KRIMINALITETA %>% select("država", "TIME_PERIOD", "OBS_VALUE", "iccs")
 
 #končna tabela - TABELA1
 
-KRIMINALITETA <- left_join(KRIMINALITETA, KRIMINAL20, by=c("država","TIME_PERIOD"))
-KRIMINALITETA <- left_join(KRIMINALITETA, KRIMINAL19, by=c("država","TIME_PERIOD"))
-KRIMINALITETA <- left_join(KRIMINALITETA, KRIMINAL18, by=c("država","TIME_PERIOD"))
-KRIMINALITETA <- left_join(KRIMINALITETA, KRIMINAL17, by=c("država","TIME_PERIOD"))
-KRIMINALITETA <- left_join(KRIMINALITETA, KRIMINAL16, by=c("država","TIME_PERIOD"))
-KRIMINALITETA <- left_join(KRIMINALITETA, KRIMINAL15, by=c("država","TIME_PERIOD"))
-KRIMINALITETA <- left_join(KRIMINALITETA, KRIMINAL14, by=c("država","TIME_PERIOD"))
-KRIMINALITETA <- left_join(KRIMINALITETA, KRIMINAL13, by=c("država","TIME_PERIOD"))
-KRIMINALITETA <- left_join(KRIMINALITETA, KRIMINAL12, by=c("država","TIME_PERIOD"))
 
-TABELA1 <- KRIMINALITETA %>% mutate (Indeks_varnosti = coalesce(`indeks varnosti20`,`indeks varnosti19`,`indeks varnosti18`,`indeks varnosti17`, `indeks varnosti16`, `indeks varnosti15`, `indeks varnosti14`, `indeks varnosti13`, `indeks varnosti12`)) %>%
-  select("država", "TIME_PERIOD", "OBS_VALUE", "iccs", Indeks_varnosti)
 
-TABELA1 <- TABELA1 %>% select("TIME_PERIOD","država",Indeks_varnosti, "iccs", "OBS_VALUE")
+colnames(Skupno_Kriminala) <- c("Drzava","TIME_PERIOD","obsojeni", "drzava")
+Skupno_Kriminala <- left_join(Skupno_Kriminala, KRIMINAL20, by=c("drzava","TIME_PERIOD"))
+Skupno_Kriminala <- left_join(Skupno_Kriminala, KRIMINAL19, by=c("drzava","TIME_PERIOD"))
+Skupno_Kriminala <- left_join(Skupno_Kriminala, KRIMINAL18, by=c("drzava","TIME_PERIOD"))
+Skupno_Kriminala <- left_join(Skupno_Kriminala, KRIMINAL17, by=c("drzava","TIME_PERIOD"))
+Skupno_Kriminala <- left_join(Skupno_Kriminala, KRIMINAL16, by=c("drzava","TIME_PERIOD"))
+Skupno_Kriminala <- left_join(Skupno_Kriminala, KRIMINAL15, by=c("drzava","TIME_PERIOD"))
+Skupno_Kriminala <- left_join(Skupno_Kriminala, KRIMINAL14, by=c("drzava","TIME_PERIOD"))
+Skupno_Kriminala <- left_join(Skupno_Kriminala, KRIMINAL13, by=c("drzava","TIME_PERIOD"))
+Skupno_Kriminala <- left_join(Skupno_Kriminala, KRIMINAL12, by=c("drzava","TIME_PERIOD"))
 
-colnames(TABELA1) <-c("Leto","Država","Indeks varnosti", "Kategorija kaznivega dejanja", "Število kaznivih dejanj na 1000 prebivalcev") 
 
-rm(KRIMINAL20, KRIMINAL19, KRIMINAL18,KRIMINAL17,KRIMINAL16,KRIMINAL15,KRIMINAL14,KRIMINAL13,KRIMINAL12,KRIMINALITETA,stran)
+Skupno_Kriminala <- Skupno_Kriminala %>% mutate (Indeks_varnosti = coalesce(`indeks varnosti20`,`indeks varnosti19`,`indeks varnosti18`,`indeks varnosti17`, `indeks varnosti16`, `indeks varnosti15`, `indeks varnosti14`, `indeks varnosti13`, `indeks varnosti12`)) %>%
+  select("Drzava","drzava","TIME_PERIOD","obsojeni", Indeks_varnosti)
 
-TABELA1 <- TABELA1 %>% drop_na(Država)
+
+
 
 #=======================================================================================================================================
-#Stopnja revščine, odstotek brezposelnih ter zadolženih ljudi v posameznih evropskih državah
+#Stopnja revščine, odstotek brezposelnih ter zadolženih ljudi v posameznih evropskih drzavah
 
 
 
@@ -232,19 +260,27 @@ GINI <-  read_csv("podatki/GINIkoeficient.csv",na=":",
 
 TABELA2 <- left_join(TABELA2, GINI, by=c("geo", "TIME_PERIOD"))
 
-colnames(TABELA2) <- c("geo", "TIME_PERIOD", "odstotek brezposelnih", "odstotek zadolženih", "revscina", "neenakosti")
+
+colnames(TABELA2) <- c("Drzava","Leto","Odstotek brezposelnih", "Odstotek zadolženih", "revscina", "GINI")
+
+colnames(Skupno_Kriminala) <- c("Drzava","drzava","Leto", "obsojeni", "Indeks")
 
 
-TABELA2 <- TABELA2 %>% select( "TIME_PERIOD", "geo", "odstotek brezposelnih", "odstotek zadolženih", "revscina", "neenakosti")
+#----------------------------
+#dodala število obsojenih
 
-colnames(TABELA2) <- c("Leto","Država","Odstotek brezposelnih", "Odstotek zadolženih", "Revščina", "Neenakosti - GINI koeficient")
 
-TABELA2 <- left_join(TABELA2, Skupno_Kriminala, by=c("Država", "Leto"))
-TABELA2 <- TABELA2[-412,]
 
+
+TABELA2 <- left_join(TABELA2, drzave, by="Drzava")
+
+TABELA2 <- left_join(TABELA2, Skupno_Kriminala, by=c("Drzava", "Leto", "drzava"))  %>% 
+  select("Leto","Drzava","drzava","Odstotek brezposelnih", "Odstotek zadolženih", "revscina", "GINI", "obsojeni", "Indeks")
+
+colnames(TABELA2) <- c("Leto","Drzava","drzava","brezposelni", "zadolzeni", "revscina", "GINI", "obsojeni", "Indeks")
 
 #=================================================================================
-na_strings <- c(" ", " ", "","—")
+na_strings <- c(" ", "  ", "","—")
 
 
 url3 <- "https://en.wikipedia.org/wiki/List_of_countries_by_incarceration_rate"
@@ -252,15 +288,53 @@ stran <- read_html(url3)
 zaprti <- stran %>% html_nodes(xpath = '//table') %>%
   .[[1]] %>%
   html_table %>%
-  select(c("Country or subnational area", "Region", "Rate per 100,000 [3]"))  %>%
+  dplyr::select(c("Country or subnational area", "Region", "Rate per 100,000 [3]"))  %>%
   rename(
-    "Država" = "Country or subnational area",
-    "Območje" = "Region",
-    "Število kaznivih dejanj na 1000000 prebivalcev" = "Rate per 100,000 [3]"
-  )%>%
+    "Country" = "Country or subnational area",
+    "Obmocje" = "Region",
+    "stevilo" = "Rate per 100,000 [3]")%>%
   replace_with_na_all(condition = ~.x %in% na_strings)%>%  #spremeni polja kjer so bli prej -, "", " ",...
-  na.omit() %>%
   mutate(across(everything(), gsub, pattern = "\\*.*", replacement = ""))%>%
-  mutate(across(everything(), gsub, pattern = "U.S.", replacement = "US"))
+  mutate(across(everything(), gsub, pattern = "U.S.", replacement = "US"))%>%
+  mutate_if(is.character, str_trim)
 
-TABELA3 <- zaprti
+
+
+
+url4 <- "https://en.wikipedia.org/wiki/List_of_countries_by_suicide_rate"
+stran <- read_html(url4)
+samomori <- stran %>% html_nodes(xpath = '//table') %>%
+  .[[2]] %>%
+  html_table %>%
+  dplyr::select(c("Country", "All")) %>%
+
+  replace_with_na_all(condition = ~.x %in% na_strings)%>%  #spremeni polja kjer so bli prej -, "", " ",...
+  mutate(across(everything(), gsub, pattern = "\\*.*", replacement = "")) %>%
+  mutate_if(is.character, str_trim)
+
+
+
+
+TABELA3<- left_join(samomori, zaprti, by="Country")
+TABELA3 <- TABELA3[-(184:190), ]
+
+TABELA3$All <- as.numeric(TABELA3$All)      
+TABELA3$stevilo <- as.numeric(TABELA3$stevilo)  
+
+
+#=====================================================
+
+Povprecno1 <-aggregate(TABELA3$All, list(TABELA3$Obmocje), FUN=mean) 
+colnames(Povprecno1) <- c("obmocje", "samomori")
+
+TABELA3 <- TABELA3 %>% na.omit()
+Povprecno2 <-aggregate(TABELA3$stevilo, list(TABELA3$Obmocje), FUN=mean) 
+colnames(Povprecno2) <- c("obmocje", "zaprti")
+
+Povprecno11<-left_join(Povprecno1,Povprecno2, by = "obmocje")
+
+Povprecno111<- gather(Povprecno11, "samomori", "zaprti", key = "tip", value = "st")
+
+
+
+
