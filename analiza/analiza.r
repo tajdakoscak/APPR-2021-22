@@ -19,12 +19,10 @@ NAPOVED <- ggplot(TABELA2, aes(x = revscina, y = obsojeni)) +
   geom_point(shape=1) + 
   geom_smooth(method=lm) +
   geom_point(data=prihodno, aes(x = revscina, y = obsojeni), color='red', size=3) 
-NAPOVED  
-
-NAPOVED
+  
 
 
-
+#-----------------------------------------------------------------
 slovenija <- Skupno_Kriminala %>% filter(drzava=="Slovenia")
 
 prilagojeno <- lm(data=slovenija,`obsojeni`~I(Leto^2) +Leto)

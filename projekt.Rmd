@@ -20,7 +20,7 @@ source("lib/libraries.r", encoding="UTF-8")
 
 ## Izbira teme
 
-V projektni nalogi sem analizira kazniva dejanja v Evropi po tipu kaznivega dejanja. Poskušala sem najti povezavo med kriminaliteto in stopnjo revščine, odstotkom brezposelnih, odstotkom zadolženih ljudi, ginijevim koeficientom (predstvalja neenakosti pri porazdelitvi dohodka) in ineksom varnosti. Na koncu sem analizirala še svetovne podatke o kriminaliteti in jih primerjala z Evropskimi ter jim dodala podatke o številu samomorov, da bi ugotovila če obstaja kakšna povezava med količino samomorov ter kriminaliteto.
+V projektni nalogi sem analizirala kazniva dejanja v Evropi po tipu kaznivega dejanja. Poskušala sem najti povezavo med kriminaliteto in stopnjo revščine, odstotkom brezposelnih, odstotkom zadolženih ljudi, ginijevim koeficientom (predstvalja neenakosti pri porazdelitvi dohodka) in indeksom varnosti. Na koncu sem analizirala še svetovne podatke o kriminaliteti in jih primerjala z Evropskimi ter jim dodala podatke o številu samomorov, da bi ugotovila če obstaja kakšna povezava med količino samomorov ter številom ljudi v zaporih.
 
 ## Obdelava, uvoz in čiščenje podatkov
 
