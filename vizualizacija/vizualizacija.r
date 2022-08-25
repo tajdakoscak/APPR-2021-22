@@ -44,7 +44,7 @@ gr2 <- drzave1 %>%
 
 
 
-#spreminjanje števila kapitala skozi leta
+#spreminjanje števila obojenih skozi leta
 gr3 <- drzave1 %>%
     ggplot(mapping = aes(x = drzava, y = obsojeni))+geom_boxplot() 
 
@@ -112,7 +112,8 @@ g7 <- ggplot(Povprecno111, aes(fill=obmocje, y=st, x=obmocje)) +
   ggtitle("Število samomorov in število zaprtih ljudi na 100,000 prebivalcev") +
   facet_wrap(~tip) +
   theme_ipsum() +
-  xlab("")
+  xlab("")+
+  theme(text = element_text(size=20),axis.text.x = element_text(angle=90, hjust=1))
 
 g7
 

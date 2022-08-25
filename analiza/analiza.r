@@ -23,3 +23,9 @@ NAPOVED
 
 
 
+#spreminjanje 
+gr3 <- drzave1 %>%
+  ggplot(mapping = aes(x = drzava, y = obsojeni))+geom_boxplot() 
+
+gr3
+
