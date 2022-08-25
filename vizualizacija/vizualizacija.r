@@ -44,9 +44,6 @@ gr2 <- drzave1 %>%
 
 
 
-#spreminjanje števila obojenih skozi leta
-gr3 <- drzave1 %>%
-    ggplot(mapping = aes(x = drzava, y = obsojeni))+geom_boxplot() 
 
 
 #Število kaznivih dejanj na 1000 prebivalcev glede na  stopnjo revščine in neenakosti v porazdelitvi dohodka -GINI koeficient

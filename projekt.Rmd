@@ -39,7 +39,7 @@ Iz teh podatkov sem naredila štiri glavne tabele
 
     -   Država
     -   Leto (2012-2021)
-    -   Delež brezposelnih prebivalcev
+    -   Delež brezposelnih 
     -   Delež zadolženih prebivalcev
     -   Stopnja revščine
     -   Ginijev koeficient
@@ -50,8 +50,8 @@ Iz teh podatkov sem naredila štiri glavne tabele
 
     -   Država sveta
     -   Območje države
-    -   Število samomorov
-    -   Število zaprtih prebivalcev na 1000000 prebivalcev
+    -   Število samomorov na 100000 prebivalcev
+    -   Število zaprtih prebivalcev na 100000 prebivalcev
 
 4.  Skupno_kriminala:
 

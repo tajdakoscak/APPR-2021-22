@@ -18,18 +18,23 @@ https://www.numbeo.com/crime/rankings_by_country.jsp?title=2020&region=150&displ
 
 
 2. Tabela: Stopnja revščine, odstotek brezposelnih, odstotek zadolženih ljudi, Ginijev koeficient v posameznih evropskih državah po letih    
-https://ec.europa.eu/eurostat/databrowser/view/tipsun20/default/table?lang=en (CSV), https://ec.europa.eu/eurostat/databrowser/view/hlth_dm050/default/table?lang=en (CSV), https://ec.europa.eu/eurostat/databrowser/view/ilc_li02$DV_548/default/table?lang=en (CSV) 
+https://ec.europa.eu/eurostat/databrowser/view/tipsun20/default/table?lang=en (CSV), https://ec.europa.eu/eurostat/databrowser/view/hlth_dm050/default/table?lang=en (CSV), https://ec.europa.eu/eurostat/databrowser/view/ilc_li02$DV_548/default/table?lang=en (CSV), https://appsso.eurostat.ec.europa.eu/nui/show.do?dataset=ilc_di12(CSV)
     * Država
-    * Leto
-    * Odstotek brezposelnih
-    * Odstotek zadolženih ljudi
+    * Leto (2012-2021)
+    * Delež brezposelnih 
+    * Delež zadolženih prebivalcev
     * Stopnja revščine
-    * Število kaznivih dejanj na 1000 prebivalcev
+    * Ginijev koeficient
+    * Indeks varnosti
+    * Število obsojenih prebivalcev na 1000 prebivalcev
     
 3. Tabela: Število ljudi v zaporih 
 https://en.wikipedia.org/wiki/List_of_countries_by_incarceration_rate (HTML)
+https://en.wikipedia.org/wiki/List_of_countries_by_suicide_raten (HTML)
     * Država
-    * število zaprtih na 100,000 prebivalcev
+    * Območje države
+    * Število samomorov na 100000 prebivalcev
+    * Število zaprtih prebivalcev na 100000 prebivalcev    
 
 
 ## Program
