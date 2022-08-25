@@ -11,24 +11,65 @@ runtime: shiny
 ---
 
 ```{r setup, echo=FALSE, results='hide', message=FALSE, warning=FALSE}
+library(dplyr)
 knitr::opts_chunk$set(echo=FALSE, message=FALSE, warning=FALSE)
 
 # Uvoz vseh potrebnih knjižnic
 source("lib/libraries.r", encoding="UTF-8")
 ```
 
-
 ## Izbira teme
 
-***
+V projektni nalogi sem analizira kazniva dejanja v Evropi po tipu kaznivega dejanja. Poskušala sem najti povezavo med kriminaliteto in stopnjo revščine, odstotkom brezposelnih, odstotkom zadolženih ljudi, ginijevim koeficientom (predstvalja neenakosti pri porazdelitvi dohodka) in ineksom varnosti. Na koncu sem analizirala še svetovne podatke o kriminaliteti in jih primerjala z Evropskimi ter jim dodala podatke o številu samomorov, da bi ugotovila če obstaja kakšna povezava med količino samomorov ter kriminaliteto.
 
 ## Obdelava, uvoz in čiščenje podatkov
+
+Podakte sem uvozila iz Eurostata(CSV), Wikipedie(HTML) in spletne strani Numbeo(HTML)
+
+Iz teh podatkov sem naredila štiri glavne tabele
+
+1.  TABELA1:
+
+    -   Država
+    -   Leto (2008-2020)
+    -   Vrsta kaznivega dejanja
+    -   Število obsojenih prebivalcev na 1000 prebivalcev
+
+2.  TABELA2:
+
+    -   Država
+    -   Leto (2012-2021)
+    -   Delež brezposelnih prebivalcev
+    -   Delež zadolženih prebivalcev
+    -   Stopnja revščine
+    -   Ginijev koeficient
+    -   Število obsojenih prebivalcev na 1000 prebivalcev
+    -   Indeks varnosti
+
+3.  TABELA3:
+
+    -   Država sveta
+    -   Območje države
+    -   Število samomorov
+    -   Število zaprtih prebivalcev na 1000000 prebivalcev
+
+4.  Skupno_kriminala:
+
+    -   Država
+    -   Leto
+    -   Število obsojenih prebivalcev na 1000 prebivalcev
+    -   Indeks varnosti
+
+Viri:
+
+-   [Numbeo](https://www.numbeo.com/crime/rankings_by_country.jsp?title=2020&region=150&displayColumn=0)
+-   [Eurostat](https://ec.europa.eu/eurostat/en/)
+-   [Wikipedia - zaprti](https://en.wikipedia.org/wiki/List_of_countries_by_incarceration_rate)
+-   [Wikipedia - samomori](https://en.wikipedia.org/wiki/List_of_countries_by_suicide_rate)
 
 ```{r uvoz}
 source("uvoz/uvoz.r", encoding="UTF-8")
 ```
-
-***
 
 ## Analiza in vizualizacija podatkov
 
@@ -36,7 +77,55 @@ source("uvoz/uvoz.r", encoding="UTF-8")
 source("vizualizacija/vizualizacija.r", encoding="UTF-8")
 ```
 
-***
+Na tortnem grafu je prikazan povprečni delež posamezne vrste kriminala po evpskih državah. Najpogostejša je kraja, sledita ji vlom in nezakonita dejanja, ki vključujejo prepovedane droge.
+
+```{r g1, echo=FALSE, message=FALSE, fig.align='center'}
+print(g1)
+```
+
+Na grafu je prikazano število kaznivih dejanj na 1000 prebivalcev v posamezni evropski državi. Vidimo, da je imela med izbranimi državami v letu 2020 največ obsojenih prebivalcev Švedska, sledita ji Nizozemska in Danska. Slovenija ima med izbranimi državami najmanj obsojencev.
+
+```{r gr2, echo=FALSE, message=FALSE, fig.align='center'}
+print(gr2)
+```
+
+Na grafu je prikazano število obsojenih glede na ginijev koeficient in indeks varnosti. Razvidno je, da se z višanjem ginijevega koeficienta, torej v višanjem neenakosti v porazdelitvi dohodka, število obsojenih niža. Države z višjim indeksom varnosti pa imajo tipično nizko število obsojenih, kar je pričakovano, saj je indeks varnosti verjetno izračunan tudi glede na količino obsojencev.
+
+```{r gr4, echo=FALSE, message=FALSE, fig.align='center'}
+print(g4)
+```
+
+Na grafu je prikazano število obsojenih glede na stopnjo revščine in indeks varnosti. Rezultati so preseneljivi, saj kažejo, da višja stopnja revščine lahko pomeni nižje število obsojenih.
+
+```{r g5, echo=FALSE, message=FALSE, fig.align='center'}
+print(g5)
+```
+
+Na grafu je prikazano število obsojenih glede odstotek zadolženig prebivalcev in indeks varnosti. Razvidno je, da višja zadolženost pomeni tudi nižje število obsojenih, kar je prav tako presenetljivo.
+
+```{r g6, echo=FALSE, message=FALSE, fig.align='center'}
+print(g6)
+```
+
+Na grafu je prikazano število obsojenih glede število brezposelnih prebivalcev in indeks varnosti. Kot kaže graf, brezposelnost na število obsojenih verjetno nima vpliva.
+
+```{r gr6, echo=FALSE, message=FALSE, fig.align='center'}
+print(gr6)
+```
+
+Na naslednjem grafu je prikazano povprečno število samomorov in število ljudi v zaporu na 100000 prebivalcev glede na posamezno območje. Vidimo, da je najvišje povprečje samomorov v Afriki in Oceaniji. Zaprtih ljudi pa je največ v Ameriki, Oceaniji in Aziji. Tudi tukaj ne moremo sklepati nobene povezave, ker so tudi razlike v zakonih velike in je lahko tudi to vzrok za različna števila ljudi v zaportih.
+
+```{r g7, echo=FALSE, message=FALSE, fig.align='center', out.width="80%"}
+print(g7)
+```
+
+Na naslednjem prikazu je narisan zemljevid Evrope, kjer se vidi kje v Evropi je najvišje in najnižje število obsojenih. Najnižje število obsojenih oseb je v Nemčiji, Franciji in Italiji.
+
+```{r zemljevid_kriminala, echo=FALSE, message=FALSE, fig.align='center'}
+print(zemljevid_kriminala)
+```
+
+------------------------------------------------------------------------
 
 ## Napredna analiza podatkov
 
@@ -44,7 +133,13 @@ source("vizualizacija/vizualizacija.r", encoding="UTF-8")
 source("analiza/analiza.r", encoding="UTF-8")
 ```
 
-***
+Za analizo sem izbrala napoved števila obsojenih prebivalcev, če bi se revščina povečala.
+
+```{r NAPOVED, echo=FALSE, message=FALSE, fig.align='center'}
+print(NAPOVED)
+```
+
+------------------------------------------------------------------------
 
 ```{r shiny}
 #shinyAppDir("shiny", options=list(width="100%", height=600))

@@ -24,7 +24,6 @@ g1<-ggplot(Povprecno, aes(x = "", y = kolicina, fill = Vrsta)) +
        x = "",
        title = "Povprečen delež posamezne vrste kriminala") + 
   coord_polar(theta = "y")
-g1
 
 
 #Ker je prikaz števila kaznivih dejanj na 1000 prebivalcev po vseh državah precej nepregleden,sem
@@ -35,8 +34,6 @@ zozano <-c("SI", "DK", "SE", "NO", "EL", "HR", "AU","FI", "NL", "BG")
 
 drzave1 <- Skupno_Kriminala %>% filter(Drzava %in% zozano)
 
-drzave1$drzava[drzave1$drzava == "Croatia/Hrvatska"] <- "Croatia"
-
 gr2 <- drzave1 %>%
       ggplot(mapping = aes(x = Leto, y = obsojeni, color = drzava))+
       labs(x = "leto",
@@ -44,12 +41,13 @@ gr2 <- drzave1 %>%
            title = "Število kaznivih dejanj na 1000 prebivalcev v izbranih Evropskih državah", 
            color = "Država") + 
       geom_line() + geom_point()
-gr2
 
 
+
+#spreminjanje števila kapitala skozi leta
 gr3 <- drzave1 %>%
     ggplot(mapping = aes(x = drzava, y = obsojeni))+geom_boxplot() 
-gr3
+
 
 #Število kaznivih dejanj na 1000 prebivalcev glede na  stopnjo revščine in neenakosti v porazdelitvi dohodka -GINI koeficient
 
@@ -58,18 +56,15 @@ g4 <- TABELA2 %>%
     mapping = aes(x = GINI, y = obsojeni, color= Indeks)
   ) +
   labs(y = "Število obsojenih na 1000 prebivalcev",
-       x = "Stopnja revščine",
-       title = "Število obsojenih glede na GINI koeficient (prikazuje neenakosti v \n porazdelitvi dohodka)in indeks varnosti",
+       x = "Ginijev koeficient",
+       title = "Število obsojenih glede na ginijev koeficient (prikazuje neenakosti v \n porazdelitvi dohodka) in indeks varnosti",
        color = "Indeks varnosti") + 
   geom_point(position = position_jitter(width = 0.15))+
-  theme(plot.title = element_text(hjust = 0.5))
-
+  theme(plot.title = element_text(hjust = 0.5))+
+  geom_smooth(se = FALSE, method = stats::lm) 
 g4
 
 
-
-
-#Število kaznivih dejanj na 1000 prebivalcev glede na  stopnjo revščine in indeks varnosti
 
 g5 <- TABELA2 %>%
   ggplot(
@@ -78,9 +73,9 @@ g5 <- TABELA2 %>%
   labs(y = "Število obsojenih na 1000 prebivalcev",
        x = "Stopnja revščine",
        title = "Število obsojenih glede na stopnjo revščine in indeks varnosti",
-       color = "Stopnja revščine") + 
-  geom_point(position = position_jitter(width = 0.15))     
-
+       color = "Indeks varnosti") + 
+  geom_point(position = position_jitter(width = 0.15))  +
+  geom_smooth(se = FALSE, method = stats::lm)    
 g5
 
 
@@ -92,10 +87,23 @@ g6 <- TABELA2 %>%
   labs(y = "Število obsojenih na 1000 prebivalcev",
        x = "Zadolženost",
        title = "Število obsojenih glede na zadolženost in indeks varnosti",
-       color = "Zadolženost") + 
-  geom_point(position = position_jitter(width = 0.15))     
-
+       color = "Indeks varnosti") + 
+  geom_point(position = position_jitter(width = 0.15))+
+  geom_smooth(se = FALSE, method = stats::lm) 
 g6
+
+gr6 <- TABELA2 %>%
+  ggplot(
+    mapping = aes(x = brezposelni, y = obsojeni, color= Indeks)
+  ) +
+  labs(y = "Število obsojenih na 1000 prebivalcev",
+       x = "Brezposelnost",
+       title = "Število obsojenih glede na brezposelnost in indeks varnosti",
+       color = "Indeks varnosti") + 
+  geom_point(position = position_jitter(width = 0.15)) +
+  geom_smooth(se = FALSE, method = stats::lm)     
+
+gr6
 
 
 g7 <- ggplot(Povprecno111, aes(fill=obmocje, y=st, x=obmocje)) + 
@@ -124,8 +132,9 @@ library(rgeos)
 
 world <- ne_countries(scale = "medium", returnclass = "sf")
 Europe <- world[which(world$continent == "Europe"),] %>% dplyr::rename("drzava" = name)
-Europe$drzava[Europe$drzava == "Czech Rep."] = "Czech Republic"
 Europe$drzava[Europe$drzava == "Slovakia"] = "Slovak Republic"
+Europe$drzava[Europe$drzava == "Czech Rep."] = "Czech Republic"
+
 
 
 
@@ -144,8 +153,10 @@ zemljevid_kriminala = kriminal %>% filter(Leto == "2020") %>% ggplot() +
   ) +
   theme_classic() +
   coord_sf(xlim = c(-24,45), ylim = c(35,70)) +
-  labs(fill = "Kriminal") + ggtitle("Zemljevid kriminala v opazovane Evropske države") +
+  labs(fill = "Kriminal") + ggtitle("Zemljevid števila obsojenih ljudi za evropske države") +
   geom_sf_text(aes(label = drzava), color = "gray", size = 2)
 
 zemljevid_kriminala
+
+
 

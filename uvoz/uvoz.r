@@ -307,7 +307,6 @@ samomori <- stran %>% html_nodes(xpath = '//table') %>%
   .[[2]] %>%
   html_table %>%
   dplyr::select(c("Country", "All")) %>%
-
   replace_with_na_all(condition = ~.x %in% na_strings)%>%  #spremeni polja kjer so bli prej -, "", " ",...
   mutate(across(everything(), gsub, pattern = "\\*.*", replacement = "")) %>%
   mutate_if(is.character, str_trim)
@@ -320,15 +319,15 @@ TABELA3 <- TABELA3[-(184:190), ]
 
 TABELA3$All <- as.numeric(TABELA3$All)      
 TABELA3$stevilo <- as.numeric(TABELA3$stevilo)  
-
+colnames(TABELA3)<-c("Drzava","samomor","Obmocje", "zaprt")
 
 #=====================================================
 
-Povprecno1 <-aggregate(TABELA3$All, list(TABELA3$Obmocje), FUN=mean) 
+Povprecno1 <-aggregate(TABELA3$samomor, list(TABELA3$Obmocje), FUN=mean) 
 colnames(Povprecno1) <- c("obmocje", "samomori")
 
-TABELA3 <- TABELA3 %>% na.omit()
-Povprecno2 <-aggregate(TABELA3$stevilo, list(TABELA3$Obmocje), FUN=mean) 
+TABELAA3 <- TABELA3 %>% na.omit()
+Povprecno2 <-aggregate(TABELAA3$zaprt, list(TABELAA3$Obmocje), FUN=mean) 
 colnames(Povprecno2) <- c("obmocje", "zaprti")
 
 Povprecno11<-left_join(Povprecno1,Povprecno2, by = "obmocje")
