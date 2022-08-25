@@ -21,5 +21,20 @@ NAPOVED <- ggplot(TABELA2, aes(x = revscina, y = obsojeni)) +
   geom_point(data=prihodno, aes(x = revscina, y = obsojeni), color='red', size=3) 
 NAPOVED  
 
+NAPOVED
+
+
+
+slovenija <- Skupno_Kriminala %>% filter(drzava=="Slovenia")
+
+prilagojeno <- lm(data=slovenija,`obsojeni`~I(Leto^2) +Leto)
+
+graf <- data.frame(Leto = seq(2021, 2022, 1))
+
+napoved <- mutate(graf, napovedano=predict(prilagojeno,graf))
+
+graf <- ggplot(slovenija, aes(x=Leto, y=`obsojeni`))+
+  geom_point() + geom_smooth(method = lm, formula =y~ x + I(x^2), fullrange = TRUE)+
+  geom_point(data = napoved, aes(x=Leto, y=napovedano), color='red', size = 2) 
 
 

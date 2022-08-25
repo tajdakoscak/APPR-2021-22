@@ -337,3 +337,4 @@ Povprecno111<- gather(Povprecno11, "samomori", "zaprti", key = "tip", value = "s
 
 
 
+

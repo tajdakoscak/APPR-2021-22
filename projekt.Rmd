@@ -139,6 +139,14 @@ Za analizo sem izbrala napoved števila obsojenih prebivalcev, če bi se revšč
 print(NAPOVED)
 ```
 
+Predvidela sem tudi število obsojenih za slovenijo v letih 2021 in 2022, saj ti podatki še niso objavljeni na Eurostatu.
+
+```{r graf, echo=FALSE, message=FALSE, fig.align='center'}
+print(graf)
+```
+
+
+
 ------------------------------------------------------------------------
 
 ```{r shiny}
